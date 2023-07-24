@@ -22,7 +22,7 @@ const start = async () => {
         process.exit(1)
       }
 
-      console.log(`Server running on ${address}:${port}`)
+      console.log(`Server running on ${address}`)
     })
 
   } catch (error) {
