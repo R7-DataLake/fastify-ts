@@ -8,6 +8,7 @@ declare module 'fastify' {
     authenticate: any
     db: Knex
     guard: any
+    axios: any
     hashPassword(password): Promise<string>
     verifyPassword(password, hash): Promise<boolean>
   }

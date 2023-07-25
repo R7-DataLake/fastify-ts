@@ -19,7 +19,7 @@ const app = fastify({
         }
         : undefined
   }
-})
+});
 
 app.register(require('@fastify/formbody'));
 app.register(require('@fastify/cors'), {
@@ -45,7 +45,7 @@ app.register(
           ok: false,
           code: 405,
           error: 'You are not allowed to call this route'
-        })
+        });
     }
   }
 );
@@ -75,32 +75,51 @@ app.register(require('@fastify/jwt'), {
   secret: process.env.API_SECRET_KEY,
   sign: {
     iss: 'test.demo.dev',
-    expiresIn: '1d'
+    expiresIn: '15m'
   },
   messages: {
     badRequestErrorMessage: 'Format is Authorization: Bearer [token]',
     noAuthorizationInHeaderMessage: 'Autorization header is missing!',
     authorizationTokenExpiredMessage: 'Authorization token expired',
     authorizationTokenInvalid: (err: any) => {
-      return `Authorization token is invalid: ${err.message}`
+      return `Authorization token is invalid: ${err.message}`;
     }
   }
-})
+});
 
 app.decorate('hashPassword', async (password: any) => {
-  const saltRounds = 12
-  return bcrypt.hash(password, saltRounds)
-})
+  const saltRounds = 12;
+  return bcrypt.hash(password, saltRounds);
+});
 
 // verify password
 app.decorate('verifyPassword', async (password: any, hash: any) => {
-  return bcrypt.compare(password, hash)
-})
+  return bcrypt.compare(password, hash);
+});
+
+app.register(require('fastify-axios'), {
+  clients: {
+    // const { dataV1, statusV1 } = await fastify.axios.v1.get('/ping')
+    v1: {
+      baseURL: 'https://v1.example.com',
+      headers: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJxyz'
+      }
+    },
+    // const { dataV2, statusV2 } = await fastify.axios.v2.get('/ping')
+    v2: {
+      baseURL: 'https://v2.example.com',
+      headers: {
+        'Authorization': 'Bearer UtOkO3UI9lPY1h3h9ygTn8pD0Va2pFDcWCNbSKlf2HE'
+      }
+    }
+  }
+});
 
 // routes
 app.register(autoload, {
   dir: path.join(__dirname, 'routes'),
   dirNameRoutePrefix: false
-})
+});
 
-export default app
+export default app;
