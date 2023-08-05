@@ -53,7 +53,7 @@ app.register(
 // Database connection
 app.register(require('./plugins/db'), {
   options: {
-    client: 'pg',
+    client: 'pg', // mysql2
     connection: {
       host: process.env.API_DB_HOST || 'localhost',
       user: process.env.API_DB_USER || 'postgres',

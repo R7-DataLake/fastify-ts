@@ -7,6 +7,7 @@ import { UserModel } from '../../models/user';
 import addSchema from '../../schema/user/add';
 import listSchema from '../../schema/user/list';
 import updateSchema from '../../schema/user/update';
+import changePasswordSchema from '../../schema/user/changePassword';
 
 export default async (fastify: FastifyInstance, _options: any, done: any) => {
 
@@ -94,6 +95,39 @@ export default async (fastify: FastifyInstance, _options: any, done: any) => {
         'last_name': lastName,
         'role': role,
         "enabled": _enabled,
+        updated_at: now
+      }
+
+      await userModel.update(db, userId, data);
+      return reply.status(StatusCodes.OK)
+        .send({ status: 'ok' });
+    } catch (error: any) {
+      request.log.error(error);
+      return reply.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send({
+          status: 'error',
+          error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
+        });
+    }
+  });
+
+  // Change password
+  fastify.put('/:userId/change-password', {
+    preHandler: [fastify.guard.role('ADMIN')],
+    schema: changePasswordSchema,
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const params: any = request.params;
+      const { userId } = params;
+
+      const body: any = request.body;
+      const { password } = body;
+
+      const hash = await fastify.hashPassword(password);
+      const now = DateTime.now().setZone('Asia/Bangkok');
+
+      const data: any = {
+        'password': hash,
         updated_at: now
       }
 
