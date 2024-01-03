@@ -1,12 +1,10 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance } from 'fastify';
 
-export default async (fastify: FastifyInstance, _options: any, done: any) => {
+export default async (fastify: FastifyInstance, options: any, done: any) => {
+	// verify jwt token
+	fastify.addHook('onRequest', (request) => request.jwtVerify());
 
-  // verify jwt token
-  fastify.addHook("onRequest", (request) => request.jwtVerify());
+	fastify.register(require('./users'), { prefix: '/users' });
 
-  fastify.register(require('./users'), { prefix: '/users' });
-
-  done();
-
-} 
+	done();
+};

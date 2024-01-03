@@ -1,15 +1,8 @@
 {
-  "verbose": true,
-  "ignore": [
-    "*.test.js",
-    "fixtures/*",
-    "views/*",
-    "public/*",
-    "dist/*"
-  ],
-  "watch": [
-    "src"
-  ],
-  "ext": "ts",
-  "exec": "npx ts-node -P ./tsconfig.json -r ./src/server.ts"
+	"verbose": true,
+	"ignore": ["*.test.js", "fixtures/*", "views/*", "public/*", "dist/*"],
+	"watch": ["src"],
+	"ext": "ts",
+	"exec": "rm -rf dist && node esbuild.js && node dist/server.js",
+	"legacyWatch": true
 }
