@@ -4,15 +4,15 @@
 
 ```
 NODE_ENV=development \
-API_DB_HOST=x.x.x.x \
-API_DB_PORT=5432 \
-API_DB_NAME=dbname \
-API_DB_USER=username \
-API_DB_PASSWORD=password \
-API_DB_POOL_MIN=0 \
-API_DB_POOL_MAX=10 \
-API_SECRET_KEY=xxxxxx \
-API_PORT=3000 \
+DB_HOST=x.x.x.x \
+DB_PORT=3306 \
+DB_NAME=dbname \
+DB_USER=username \
+DB_PASSWORD=password \
+DB_POOL_MIN=0 \
+DB_POOL_MAX=10 \
+SECRET_KEY=xxxxxx \
+PORT=3000 \
 npm start
 ```
 
@@ -22,15 +22,15 @@ npm start
 @ECHO OFF
 
 SET NODE_ENV=development
-SET API_DB_HOST=x.x.x.x
-SET API_DB_PORT=5432
-SET API_DB_NAME=dbname
-SET API_DB_USER=username
-SET API_DB_PASSWORD=password
-SET API_DB_POOL_MIN=0
-SET API_DB_POOL_MAX=10
-SET API_SECRET_KEY=xxxxxx
-SET API_PORT=3000
+SET DB_HOST=x.x.x.x
+SET DB_PORT=3306
+SET DB_NAME=dbname
+SET DB_USER=username
+SET DB_PASSWORD=password
+SET DB_POOL_MIN=0
+SET DB_POOL_MAX=10
+SET SECRET_KEY=xxxxxx
+SET PORT=3000
 npm start
 ```
 

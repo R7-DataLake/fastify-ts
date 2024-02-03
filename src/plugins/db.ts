@@ -1,19 +1,30 @@
 import fp from 'fastify-plugin';
 import Knex from 'knex';
 
-module.exports = fp(
-	(fastify: any, opts: any, done: any) => {
-		const handler = Knex(opts.options);
+export default fp(async (fastify) => {
+	if (!fastify.db) {
+		const knex = Knex({
+			client: 'mysql2',
+			connection: {
+				host: process.env.DB_HOST || 'localhost',
+				port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+				database: process.env.DB_NAME || 'test',
+				user: process.env.DB_USER || 'root',
+				password: process.env.DB_PASSWORD || '123456',
+			},
+			debug: process.env.NODE_ENV === 'development',
+			pool: {
+				min: 2,
+				max: 10,
+			},
+		});
 
-		fastify
-			.decorate('db', handler)
-			.addHook('onClose', (instance: any, done: any) => {
-				if (instance.knex === handler) {
-					instance.knex.destroy(done);
-				}
-			});
+		fastify.decorate('db', knex);
 
-		done();
-	},
-	{ fastify: '4.x', name: 'fastify/db' }
-);
+		fastify.addHook('onClose', (fastify, done) => {
+			if (fastify.db === knex) {
+				fastify.db.destroy(done);
+			}
+		});
+	}
+});

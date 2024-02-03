@@ -23,14 +23,14 @@ export default async (fastify: FastifyInstance, options: any, done: any) => {
 			try {
 				const _query: any = request.query;
 				const { limit, offset, query } = _query;
-				const _limit = limit || 20;
-				const _offset = offset || 0;
+				const _limit = limit ?? '20';
+				const _offset = offset ?? '0';
 
 				const data: any = await userModel.list(
 					db,
 					query,
-					_limit,
-					_offset
+					Number(_limit),
+					Number(_offset)
 				);
 				const rsTotal: any = await userModel.listTotal(db, query);
 

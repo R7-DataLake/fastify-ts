@@ -33,7 +33,6 @@ export default async (fastify: FastifyInstance, options: any, done: any) => {
 				}
 
 				const hash: any = result.password;
-
 				const match: any = await fastify.verifyPassword(password, hash);
 
 				if (!match) {
